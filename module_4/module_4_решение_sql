@@ -11,6 +11,7 @@ WITH table_1 AS(
       f.actual_arrival,
       f.status,
       f.scheduled_departure,
+      a.range,
       a.aircraft_code
   /*соединяем 2 таблицы*/ 
   FROM dst_project.flights f
@@ -39,6 +40,7 @@ SELECT t1.flight_id,
        t1.arrival_airport,
        t1.duration_hours,
        t1.model,
+       t1.range,
        t2.total_amount,
        t2.amount_passengers,
        t3.seats,
