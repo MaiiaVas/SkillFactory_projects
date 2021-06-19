@@ -1,0 +1,53 @@
+/*используем обобщенное табличное выражение*/
+WITH table_1 AS(
+  /*перечесляем колонки, которые хотим сохранить для дальнейшего использования*/ 
+  SELECT extract(epoch from (f.actual_arrival - f.actual_departure)) / 60 / 60 AS duration_hours, --считаем время в пути в часах и заносим результат в новую колонку
+      a.model,
+      f.flight_id, 
+      f.flight_no,
+      f.departure_airport,
+      f.arrival_airport, 
+      f.actual_departure,
+      f.actual_arrival,
+      f.status,
+      f.scheduled_departure,
+      a.aircraft_code
+  /*соединяем 2 таблицы*/ 
+  FROM dst_project.flights f
+        LEFT JOIN dst_project.aircrafts a 
+        ON f.aircraft_code = a.aircraft_code),
+table_2 AS(
+  /*считаем стоимость билетов за каждый полёт*/
+  SELECT f.flight_id, count(f.fare_conditions) amount_passengers, sum(f.amount) total_amount
+  FROM dst_project.ticket_flights f
+  GROUP BY 1),
+table_3 AS (
+  /*считаем сколько сидений на каждом самолёте*/
+  SELECT a.aircraft_code,
+    count(s.seat_no) seats
+  FROM dst_project.aircrafts a
+    LEFT JOIN dst_project.seats s 
+      on a.aircraft_code = s.aircraft_code
+  GROUP BY 1)
+/*формируем датасет с нужными нам данными*/
+SELECT t1.flight_id,
+       t1.flight_no,
+       t1.departure_airport,
+       t1.arrival_airport,
+       t1.duration_hours,
+       t1.model,
+       t2.total_amount,
+       t2.amount_passengers,
+       t3.seats,
+       t3.seats - t2.amount_passengers as empty_seats
+       
+FROM table_1 t1
+       LEFT JOIN table_2 t2 on t1.flight_id = t2.flight_id
+       LEFT JOIN table_3 t3 on t1.aircraft_code = t3.aircraft_code
+
+/*отсекаем рейсы не из Анапы и отменненые*/
+WHERE departure_airport = 'AAQ'
+  AND (date_trunc('month', scheduled_departure) in ('2017-01-01','2017-02-01', '2017-12-01'))
+  AND status not in ('Cancelled')
+
+ORDER BY t2.total_amount
