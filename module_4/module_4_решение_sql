@@ -16,11 +16,13 @@ WITH table_1 AS(
   FROM dst_project.flights f
         LEFT JOIN dst_project.aircrafts a 
         ON f.aircraft_code = a.aircraft_code),
+
 table_2 AS(
   /*считаем стоимость билетов за каждый полёт*/
   SELECT f.flight_id, count(f.fare_conditions) amount_passengers, sum(f.amount) total_amount
   FROM dst_project.ticket_flights f
   GROUP BY 1),
+
 table_3 AS (
   /*считаем сколько сидений на каждом самолёте*/
   SELECT a.aircraft_code,
@@ -29,6 +31,7 @@ table_3 AS (
     LEFT JOIN dst_project.seats s 
       on a.aircraft_code = s.aircraft_code
   GROUP BY 1)
+
 /*формируем датасет с нужными нам данными*/
 SELECT t1.flight_id,
        t1.flight_no,
