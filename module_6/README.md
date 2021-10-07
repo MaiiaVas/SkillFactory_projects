@@ -2,35 +2,35 @@
 Для оценки использовать метрику MAPE
 
 *Описание признаков в датасете:*
-bodyType - тип кузова
-brand - марка автомобиля
-car_url - адрес страницы с объявлением
-color - цвет автомобиля
-complectation_dict - словарь с параметрами комплектации авто
-description - описание автомобиля
-engineDisplacement - объем двигателя
-enginePower - мощность двигателя
-equipment_dict - словарь оснащения авто
-fuelType - тип топлива
-image - изображение
-mileage - пробег
-modelDate - дата выпуска модели
-model_info - информация о модели
-model_name - название модели
-name - имя
-numberOfDoors - кол-во дверей
-parsing_unixtime - когда был произведен парсинг данных
-priceCurrency - валюта
-productionDate - год производства
-sell_id
-super_gen - словарь с дополинтельной информацией
-vehicleConfiguration - конфигурация транспортного средства
-vehicleTransmission - трансмиссия
-vendor - страна-изготовитель
-Владельцы - кол-во владельцев
-Владение - период владения
-ПТС
-Привод
-Руль
-Состояние
-Таможня
+* bodyType - тип кузова
+* brand - марка автомобиля
+* car_url - адрес страницы с объявлением
+* color - цвет автомобиля
+* complectation_dict - словарь с параметрами комплектации авто
+* description - описание автомобиля
+* engineDisplacement - объем двигателя
+* enginePower - мощность двигателя
+* equipment_dict - словарь оснащения авто
+* fuelType - тип топлива
+* image - изображение
+* mileage - пробег
+* modelDate - дата выпуска модели
+* model_info - информация о модели
+* model_name - название модели
+* name - имя
+* numberOfDoors - кол-во дверей
+* parsing_unixtime - когда был произведен парсинг данных
+* priceCurrency - валюта
+* productionDate - год производства
+* sell_id
+* super_gen - словарь с дополинтельной информацией
+* vehicleConfiguration - конфигурация транспортного средства
+* vehicleTransmission - трансмиссия
+* vendor - страна-изготовитель
+* Владельцы - кол-во владельцев
+* Владение - период владения
+* ПТС
+* Привод
+* Руль
+* Состояние
+* Таможня
