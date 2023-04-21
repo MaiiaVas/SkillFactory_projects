@@ -13,7 +13,7 @@ WITH table_1 AS(
       f.scheduled_departure,
       a.range,
       a.aircraft_code
-  /*соединяем 2 таблицы*/ 
+  /*соединяем таблицы*/ 
   FROM dst_project.flights f
         LEFT JOIN dst_project.aircrafts a 
         ON f.aircraft_code = a.aircraft_code),
