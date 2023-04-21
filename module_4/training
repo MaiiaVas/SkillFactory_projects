@@ -1,6 +1,6 @@
 SQL
 
-/*4.1 finding in wich cities in Russia more then 1 airport*/
+/*4.1 Finding in wich cities in Russia more then 1 airport*/
 
 select a.city,
   count(a.airport_code)
@@ -8,18 +8,18 @@ from dst_project.AIRPORTS a
 group by a.city
 order by count(a.airport_code) desc
 
-/*4.2.1 finding what statuses are used in the table*/
+/*4.2.1 Finding what statuses are used in the table*/
 
 select count(distinct f.status)
 from dst_project.flights f
 
-/*4.2.2 finding how many flights are in the air on the moment when the data were recieved*/
+/*4.2.2 Finding how many flights are in the air on the moment when the data were recieved*/
 
 select count(f.flight_id)
 from dst_project.flights f
 where f.status = 'Departed'
 
-/*4.2.3 finding how many seats has Boeing 777-300*/
+/*4.2.3 Finding how many seats has Boeing 777-300*/
 
 select count(s.seat_no)
 from dst_project.aircrafts a
@@ -27,19 +27,19 @@ from dst_project.aircrafts a
     on a.aircraft_code = s.aircraft_code
 where a.model = 'Boeing 777-300'
 
-/*4.2.4 finding how many flights were made between April 1, 2017 and September 1, 2017*/
+/*4.2.4 Finding how many flights were made between April 1, 2017 and September 1, 2017*/
 
 select count(f.flight_id)
 from dst_project.flights f
 where f.status = 'Arrived' and f.actual_arrival BETWEEN '2017-04-01' and '2017-09-01'
 
-/*4.3.1 finding how many flights were canceled*/
+/*4.3.1 Finding how many flights were canceled*/
 
 select count(flight_id)
 from dst_project.flights
 where status = 'Cancelled' 
 
-/*4.3.2 finding how many airplane models of Boeing || Sukhoi Superjet || Airbus*/
+/*4.3.2 Finding how many airplane models of Boeing || Sukhoi Superjet || Airbus*/
 
 select count(a.aircraft_code)
 from dst_project.aircrafts a
@@ -53,7 +53,7 @@ select count(a.aircraft_code)
 from dst_project.aircrafts a
 where a.model like 'Airbu%'
 
-/*4.3.3 finding what part of the world (Europe, Asia or Australia) has the biggest amount of airports*/
+/*4.3.3 Finding what part of the world (Europe, Asia or Australia) has the biggest amount of airports*/
 
 select 'Europe' part, 
     count(a.airport_code)
@@ -75,7 +75,7 @@ from dst_project.AIRPORTS a
 WHERE a.timezone LIKE 'Australia%'
 
 
-/*4.3.4 finding the biggest delay*/
+/*4.3.4 Finding the biggest delay*/
 
 SELECT extract(epoch FROM (f.actual_arrival - f.scheduled_arrival)) AS delay,
     f.flight_id
@@ -83,30 +83,30 @@ FROM dst_project.flights AS f
 where status = 'Arrived'
 order by delay desc
 
-/*4.4.1 finding the first planned flight in base*/
+/*4.4.1 Finding the first planned flight in base*/
 
 select f.flight_id, f.scheduled_departure
 from dst_project.flights f
 order by f.scheduled_departure
 
-/*4.4.2 finding the longest flight in minutes*/
+/*4.4.2 Finding the longest flight in minutes*/
 
 select max(extract(epoch from (f.scheduled_arrival - f.scheduled_departure))) / 60 as duration_minutes
 from dst_project.flights f
 
-/*4.4.3 finding the airports between wich is the longest flight*/
+/*4.4.3 Finding the airports between wich is the longest flight*/
 
 select f.departure_airport, f.arrival_airport, max(extract(epoch from (f.scheduled_arrival - f.scheduled_departure))) / 60 as duration_minutes
 from dst_project.flights as f
 group by f.departure_airport, f.arrival_airport
 order by duration_minutes desc
 
-/*4.4.4 finding the average lenght of all flights*/
+/*4.4.4 Finding the average lenght of all flights*/
 
 select avg (extract(epoch from (f.scheduled_arrival - f.scheduled_departure))) / 60 as duration_minutes
 from dst_project.flights as f
 
-/*4.5.1 finding the most common fare_conditions on SU-9*/
+/*4.5.1 Finding the most common fare_conditions on SU-9*/
 
 select s.fare_conditions, 
     count(s.seat_no)
@@ -116,12 +116,12 @@ from dst_project.aircrafts a
 where a.aircraft_code = 'SU9'
 group by s.fare_conditions
 
-/*4.5.2 finding the cheapest booking*/
+/*4.5.2 Finding the cheapest booking*/
 
 select min(b.total_amount)
 from dst_project.bookings b
 
-/*4.5.3 finding the seat of the passenger wit id 4313 788533*/
+/*4.5.3 Finding the seat of the passenger wit id 4313 788533*/
 
 select b.seat_no, t.passenger_id
 from dst_project.tickets t
@@ -129,14 +129,14 @@ from dst_project.tickets t
     on t.ticket_no = b.ticket_no
 where t.passenger_id = '4313 788533'
 
-/*5.1.1 finding the amount of flights to Anapa in 2017*/
+/*5.1.1 Finding the amount of flights to Anapa in 2017*/
 
 select count(f.flight_id)
 from dst_project.flights f
 where f.arrival_airport = 'AAQ' 
     and date_part('year', f.actual_departure) = 2017
 
-/*5.1.2 finding the amount of flights from Anapa in winter 2017*/
+/*5.1.2 Finding the amount of flights from Anapa in winter 2017*/
 
 select count(f.flight_id)
 from dst_project.flights f
@@ -144,21 +144,21 @@ where f.departure_airport = 'AAQ'
     and date_part('year', f.actual_departure) = 2017
     and date_part('month', f.actual_departure) in (12, 1, 2)
         
-/*5.1.3 finding the amount of cancelled flights from Anapa*/
+/*5.1.3 Finding the amount of cancelled flights from Anapa*/
 
 select count(f.flight_id)
 from dst_project.flights f
 where f.departure_airport = 'AAQ' 
     and f.status = 'Cancelled'
     
-/*5.1.3 finding the amount of flights from Anapa that are not going to Moscow*/
+/*5.1.3 Finding the amount of flights from Anapa that are not going to Moscow*/
 
 select count(f.flight_id)
 from dst_project.flights f
 where f.departure_airport = 'AAQ' 
     and f.arrival_airport not in ('SVO', 'VKO', 'DME')
     
-/*5.1.4 finding the model of airplane with the biggest amount of seats on the flights from Anapa*/
+/*5.1.4 Finding the model of airplane with the biggest amount of seats on the flights from Anapa*/
 
 select count(s.seat_no),
     a.model
